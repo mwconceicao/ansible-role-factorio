@@ -12,7 +12,12 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: pip install -r tests/requirements.txt
+          command: |
+            virtualenv ~/venv
+            . ~/venv/bin/activate
+            pip install -r tests/requirements.txt
       - run:
           name: Run test
-          command: make test
+          command: |
+            . ~/venv/bin/activate
+            make test
