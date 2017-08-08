@@ -1,4 +1,5 @@
 Factorio Ansible Role
+[![CircleCI](https://circleci.com/gh/mwconceicao/ansible-role-factorio/tree/master.svg?style=svg)](https://circleci.com/gh/mwconceicao/ansible-role-factorio/tree/master)
 =====================
 
 Install and configure [Factorio](https://www.factorio.com/), including [factorio-init](https://github.com/Bisa/factorio-init) and [factorio-updater](https://github.com/narc0tiq/factorio-updater).
