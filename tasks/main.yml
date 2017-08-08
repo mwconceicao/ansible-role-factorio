@@ -1,0 +1,82 @@
+---
+- name: Install dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python-pip 
+  tags: deps
+
+- name: Install pip dependencies
+  pip:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - requests
+  tags: deps
+
+- name: Ensure factorio group
+  group:
+    name: "{{ factorio_group }}"
+    state: present
+
+- name: Ensure factorio user
+  user:
+    name: "{{ factorio_user }}"
+    groups: "{{ factorio_group }}"
+    state: present
+
+- name: Download factorio headless
+  get_url:
+    url: https://www.factorio.com/get-download/{{ factorio_version }}/headless/linux64
+    dest: /tmp/factorio-{{ factorio_version }}.tar.gz
+
+- name: Extract factorio headless
+  unarchive:
+    copy: no
+    src: /tmp/factorio-{{ factorio_version }}.tar.gz
+    dest: "{{ factorio_install_dest }}"
+    creates: "{{ factorio_path }}"
+
+- name: Ensure correct factorio directory permissions
+  file:
+    path: "{{ factorio_path }}"
+    owner: "{{ factorio_user }}"
+    group: "{{ factorio_group }}"
+    recurse: yes
+    state: directory
+
+- name: Ensure correct factorio saves directory permissions
+  file:
+    path: "{{ factorio_path }}/saves"
+    owner: "{{ factorio_user }}"
+    group: "{{ factorio_group }}"
+    mode: 0775
+    state: directory
+
+- name: Ensure factorio config directory
+  file:
+    path: "{{ factorio_path }}/config"
+    owner: "{{ factorio_user }}"
+    group: "{{ factorio_group }}"
+    mode: 0775
+    state: directory
+
+# factorio-init
+- name: Download factorio-ini
+  git:
+    repo: https://github.com/Bisa/factorio-init.git
+    dest: "{{ factorio_init_path }}"
+
+- name: Set factorio-init config
+  template:
+    src: factorio-init-config.j2
+    dest: "{{ factorio_init_path }}/config"
+
+#- name: Ensure factorio-init service script
+
+# factorio-updater
+- name: Download factorio-updater
+  git:
+    repo: https://github.com/narc0tiq/factorio-updater.git
+    dest: "{{ factorio_updater_path }}" 

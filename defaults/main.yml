@@ -1,0 +1,23 @@
+---
+factorio_version: 0.14.20
+
+factorio_user: factorio
+factorio_group: factorio
+
+factorio_install_dest: /opt
+factorio_path: "{{ factorio_install_dest }}/factorio"
+
+# game configs
+factorio_port: 34197
+factorio_latency: 250
+factorio_autosave_interval: 10
+factorio_autosave_slots: 3
+factorio_server_settings: game.json
+
+factorio_bin_args: "--disallow-commands"
+
+# factorio-init
+factorio_init_path: /opt/factorio-init
+
+# factorio-updater
+factorio_updater_path: /opt/factorio-updater
